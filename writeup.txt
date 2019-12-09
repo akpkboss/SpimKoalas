@@ -1,0 +1,3 @@
+Our current strategy is a rather simple one. We set the velocity to 10 and move forward while we have paint.
+Everytime we move forward we try to picup a power up and then check if there is a powerup in our inventory. If there is a powerup
+in our inventory we immediately use it. 

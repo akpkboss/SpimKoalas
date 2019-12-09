@@ -71,6 +71,9 @@ checkPaint:
 
     li $t0, 1
     sw $t0, SWITCH_MODE($zero)
+    #move right everytime paint check is executed
+    
+    
     #if (bot.x = powerup.x && bot.y == powerup.y) {
         #pickup the powerUp
         #then use it
@@ -112,6 +115,11 @@ contPaintCheck:
 getPuzzle:
     li $t0, 0
     sw $t0, VELOCITY($zero)
+
+    li $t0, 90
+    sw $t0, ANGLE($zero)
+    sw $zero, ANGLE_CONTROL($zero)
+
     la $t0, puzzle
     sw $t0, REQUEST_PUZZLE($zero)
 
@@ -813,18 +821,23 @@ interrupt_dispatch:            # Interrupt:
 bonk_interrupt:
     sw      $0, BONK_ACK
     #Fill in your code here
-    li $t0, 90
-    sw $t0, ANGLE($zero)
-    sw $zero, ANGLE_CONTROL($zero)
-
+    
+    # sw $t0, ANGLE($zero)
+    # sw $zero, ANGLE_CONTROL($zero)
+    li $t0, -90
     li $a1, 10
+
     lw $a0, TIMER($zero)
     and $a0, $a0, 1
     bne $a0, $zero, bonk_skip
-    li $a1, -10
 
+    li $a1, -10
+    li $t0, 90
 
 bonk_skip:
+
+    sw $t0, ANGLE($zero)
+    sw $zero, ANGLE_CONTROL($zero)
     sw $a1, VELOCITY($zero)
 
     j       interrupt_dispatch    # see if other interrupts are waiting
